@@ -1,0 +1,40 @@
+@import "bootstrap";
+
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.nav-link.active {
+  text-decoration: underline;
+  color: #000; /* Optional: to change the color when active */
+}
+
+
+.news-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.news-card img {
+  max-width: 100%; /* Ensures the logo scales appropriately */
+}
+
+.news-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.news-card .card-title {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.news-card .btn {
+  margin-top: auto; /* Pushes the button to the bottom */
+}
+
+

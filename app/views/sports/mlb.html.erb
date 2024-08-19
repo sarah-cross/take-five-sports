@@ -1,0 +1,309 @@
+
+<% if @highlight_videos.any? %>
+  <div id="videoCarousel" class="carousel slide" data-bs-ride="carousel">
+    
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+      <% @highlight_videos.first(10).each_with_index do |_, index| %>
+        <button type="button" data-bs-target="#videoCarousel" data-bs-slide-to="<%= index %>" class="<%= 'active' if index == 0 %>" aria-current="<%= 'true' if index == 0 %>" aria-label="Slide <%= index + 1 %>"></button>
+      <% end %>
+    </div>
+    
+    <div class="carousel-inner">
+      <% @highlight_videos.first(10).each_with_index do |video, index| %>
+        <div class="carousel-item <%= 'active' if index == 0 %>">
+          <% if video["embedUrl"].present? %>
+            <iframe src="<%= video['embedUrl'] %>" class="d-block w-100" height="500" frameborder="0" allowfullscreen></iframe>
+          <% else %>
+            <img src="<%= video['imgUrl'] %>" class="d-block w-100" height="600" alt="<%= video['title'] %>">
+            <div class="carousel-caption d-none d-md-block">
+              <h1><%= video['title'] %></h1>
+              <p><%= video['description'] %></p>
+              <a href="<%= video['url'] %>" class="btn btn-primary" target="_blank">Watch Video</a>
+            </div>
+          <% end %>
+          
+        </div>
+      <% end %>
+    </div>
+    
+    <button class="carousel-control-prev" type="button" data-bs-target="#videoCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#videoCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+<% else %>
+  <p>No videos available.</p>
+<% end %>
+
+</br>
+
+
+
+<div class="container">
+  <div class="row">
+    <!-- Standings Table Column -->
+    <div class="col-md-8">
+      <ul class="nav nav-tabs" id="standingsTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="al-tab" data-bs-toggle="tab" data-bs-target="#al" type="button" role="tab" aria-controls="al" aria-selected="true">American League</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="nl-tab" data-bs-toggle="tab" data-bs-target="#nl" type="button" role="tab" aria-controls="nl" aria-selected="false">National League</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="standingsTabContent">
+        <!-- American League Tab -->
+        <div class="tab-pane fade show active" id="al" role="tabpanel" aria-labelledby="al-tab">
+          <!-- American League standings table -->
+          <div class="table-responsive">
+            <!-- AL East Division -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>AL East</th>
+                  <th>W</th>
+                  <th>L</th>
+                  <th>Pct</th>
+                  <th>GB</th>
+                  <th>Home</th>
+                  <th>Away</th>
+                  <th>L10</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @al_standings_data['data'].first['data'].each do |team| %>
+                  <% if ['Yankees', 'Red Sox', 'Blue Jays', 'Rays', 'Orioles'].include?(team['name']) %>
+                    <tr>
+                      <td>
+                        <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
+                        <%= team['name'] %>
+                      </td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+
+            <!-- AL Central Division -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>AL Central</th>
+                  <th>W</th>
+                  <th>L</th>
+                  <th>Pct</th>
+                  <th>GB</th>
+                  <th>Home</th>
+                  <th>Away</th>
+                  <th>L10</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @al_standings_data['data'].first['data'].each do |team| %>
+                  <% if ['White Sox', 'Guardians', 'Tigers', 'Royals', 'Twins'].include?(team['name']) %>
+                    <tr>
+                      <td>
+                        <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
+                        <%= team['name'] %>
+                      </td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+
+            <!-- AL West Division -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>AL West</th>
+                  <th>W</th>
+                  <th>L</th>
+                  <th>Pct</th>
+                  <th>GB</th>
+                  <th>Home</th>
+                  <th>Away</th>
+                  <th>L10</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @al_standings_data['data'].first['data'].each do |team| %>
+                  <% if ['Astros', 'Angels', 'Athletics', 'Mariners', 'Rangers'].include?(team['name']) %>
+                    <tr>
+                      <td>
+                        <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
+                        <%= team['name'] %>
+                      </td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+
+
+          </div>
+        </div>
+        <!-- National League Tab -->
+        <div class="tab-pane fade" id="nl" role="tabpanel" aria-labelledby="nl-tab">
+          <!-- National League standings table -->
+          <div class="table-responsive">
+            <!-- NL East Division -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>NL East</th>
+                  <th>W</th>
+                  <th>L</th>
+                  <th>Pct</th>
+                  <th>GB</th>
+                  <th>Home</th>
+                  <th>Away</th>
+                  <th>L10</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @nl_standings_data['data'].first['data'].each do |team| %>
+                  <% if ['Braves', 'Marlins', 'Mets', 'Phillies', 'Nationals'].include?(team['name']) %>
+                    <tr>
+                      <td>
+                        <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
+                        <%= team['name'] %>
+                      </td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+
+            <!-- NL Central Division -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>NL Central</th>
+                  <th>W</th>
+                  <th>L</th>
+                  <th>Pct</th>
+                  <th>GB</th>
+                  <th>Home</th>
+                  <th>Away</th>
+                  <th>L10</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @nl_standings_data['data'].first['data'].each do |team| %>
+                  <% if ['Cubs', 'Reds', 'Brewers', 'Pirates', 'Cardinals'].include?(team['name']) %>
+                    <tr>
+                      <td>
+                        <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
+                        <%= team['name'] %>
+                      </td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+
+            <!-- NL West Division -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>NL West</th>
+                  <th>W</th>
+                  <th>L</th>
+                  <th>Pct</th>
+                  <th>GB</th>
+                  <th>Home</th>
+                  <th>Away</th>
+                  <th>L10</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @nl_standings_data['data'].first['data'].each do |team| %>
+                  <% if ['Diamondbacks', 'Rockies', 'Dodgers', 'Padres', 'Giants'].include?(team['name']) %>
+                    <tr>
+                      <td>
+                        <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
+                        <%= team['name'] %>
+                      </td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
+                      <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- News Stories Column -->
+    <div class="col-md-4">
+        <% @news['body'].first(8).each do |news_item| %>
+            <div class="card mb-3">
+              <div class="row no-gutters">
+                  <div class="col-md-4 d-flex align-items-center justify-content-center">
+                      <% logo = @team_logos.find { |team, _logo| news_item['title'].downcase.include?(team) }&.last || 'mlbEspn.svg' %>
+                      <%= image_tag(logo, class: 'card-img', alt: 'Team Logo', style: 'width: 64px; height: 64px; object-fit: contain;') %>
+                  </div>
+                  <div class="col-md-8">
+                      <div class="card-body">
+                          <h8 class="card-title"><%= news_item['title'] %></h8>
+                          <a href="<%= news_item['link'] %>" class="card-link">See more</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        <% end %>
+    </div>
+  </div>
+</div>
+
+
+
+

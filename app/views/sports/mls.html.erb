@@ -1,0 +1,158 @@
+
+<% if @highlight_videos.any? %>
+  <div id="videoCarousel" class="carousel slide" data-bs-ride="carousel">
+    
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+      <% @highlight_videos.first(10).each_with_index do |_, index| %>
+        <button type="button" data-bs-target="#videoCarousel" data-bs-slide-to="<%= index %>" class="<%= 'active' if index == 0 %>" aria-current="<%= 'true' if index == 0 %>" aria-label="Slide <%= index + 1 %>"></button>
+      <% end %>
+    </div>
+    
+    <div class="carousel-inner">
+      <% @highlight_videos.first(10).each_with_index do |video, index| %>
+        <div class="carousel-item <%= 'active' if index == 0 %>">
+          <% if video["embedUrl"].present? %>
+            <iframe src="<%= video['embedUrl'] %>" class="d-block w-100" height="500" frameborder="0" allowfullscreen></iframe>
+          <% else %>
+            <img src="<%= video['imgUrl'] %>" class="d-block w-100" height="600" alt="<%= video['title'] %>">
+            <div class="carousel-caption d-none d-md-block">
+              <h1><%= video['title'] %></h1>
+              <p><%= video['description'] %></p>
+              <a href="<%= video['url'] %>" class="btn btn-primary" target="_blank">Watch Video</a>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    
+    <button class="carousel-control-prev" type="button" data-bs-target="#videoCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#videoCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+<% else %>
+  <p>No videos available.</p>
+<% end %>
+
+</br>
+
+<div class="container">
+  <div class="row">
+    <!-- Standings Table Column -->
+    <div class="col-md-8">
+ 
+      <ul class="nav nav-tabs" id="standingsTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="eastern-tab" data-bs-toggle="tab" data-bs-target="#eastern" type="button" role="tab" aria-controls="eastern" aria-selected="true">Eastern Conference</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="western-tab" data-bs-toggle="tab" data-bs-target="#western" type="button" role="tab" aria-controls="western" aria-selected="false">Western Conference</button>
+        </li>
+      </ul>
+      <div class="tab-content" id="standingsTabContent">
+        <!-- Eastern Conference Tab -->
+        <div class="tab-pane fade show active" id="eastern" role="tabpanel" aria-labelledby="eastern-tab">
+          <!-- Eastern Conference standings table -->
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Club</th>
+                  <th>MP</th>
+                  <th>W</th>
+                  <th>D</th>
+                  <th>L</th>
+                  <th>GF</th>
+                  <th>GA</th>
+                  <th>GD</th>
+                  <th>Pts</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @eastern_conference_standings.each do |team| %>
+                  <tr>
+                    <td>
+                      <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %> logo" width="30" height="30">
+                      <%= team['team']['name'] %>
+                    </td>
+                    <td><%= team['all']['played'] %></td>
+                    <td><%= team['all']['win'] %></td>
+                    <td><%= team['all']['draw'] %></td>
+                    <td><%= team['all']['lose'] %></td>
+                    <td><%= team['all']['goals']['for'] %></td>
+                    <td><%= team['all']['goals']['against'] %></td>
+                    <td><%= team['goalsDiff'] %></td>
+                    <td><%= team['points'] %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Western Conference Tab -->
+        <div class="tab-pane fade" id="western" role="tabpanel" aria-labelledby="western-tab">
+          <!-- Western Conference standings table -->
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Club</th>
+                  <th>MP</th>
+                  <th>W</th>
+                  <th>D</th>
+                  <th>L</th>
+                  <th>GF</th>
+                  <th>GA</th>
+                  <th>GD</th>
+                  <th>Pts</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @western_conference_standings.each do |team| %>
+                  <tr>
+                    <td>
+                      <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %> logo" width="30" height="30">
+                      <%= team['team']['name'] %>
+                    </td>
+                    <td><%= team['all']['played'] %></td>
+                    <td><%= team['all']['win'] %></td>
+                    <td><%= team['all']['draw'] %></td>
+                    <td><%= team['all']['lose'] %></td>
+                    <td><%= team['all']['goals']['for'] %></td>
+                    <td><%= team['all']['goals']['against'] %></td>
+                    <td><%= team['goalsDiff'] %></td>
+                    <td><%= team['points'] %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- News Stories Column -->
+    <div class="col-md-4">
+        <% @news['articles'].first(8).each do |news_item| %>
+            <div class="card mb-3">
+              <div class="row no-gutters">
+                  <div class="col-md-4 d-flex align-items-center justify-content-center">
+                      <img src="<%= news_item['images'].first['url'] %>" alt="<%= news_item['images'].first['alt'] %>" class="img-fluid" width="100%" height="auto">
+                  </div>
+                  <div class="col-md-8">
+                      <div class="card-body">
+                          <h8 class="card-title"><%= news_item['headline'] %></h8>
+                          <a href="<%= news_item['links']['web']['href'] %>" class="card-link">See more</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        <% end %>
+    </div>
+  </div>
+</div>
+

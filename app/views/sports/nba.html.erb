@@ -1,0 +1,138 @@
+
+<% if @highlight_videos.any? %>
+  <div id="videoCarousel" class="carousel slide" data-bs-ride="carousel">
+    
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+      <% @highlight_videos.first(10).each_with_index do |_, index| %>
+        <button type="button" data-bs-target="#videoCarousel" data-bs-slide-to="<%= index %>" class="<%= 'active' if index == 0 %>" aria-current="<%= 'true' if index == 0 %>" aria-label="Slide <%= index + 1 %>"></button>
+      <% end %>
+    </div>
+    
+    <div class="carousel-inner">
+      <% @highlight_videos.first(10).each_with_index do |video, index| %>
+        <div class="carousel-item <%= 'active' if index == 0 %>">
+          <% if video["embedUrl"].present? %>
+            <iframe src="<%= video['embedUrl'] %>" class="d-block w-100" height="500" frameborder="0" allowfullscreen></iframe>
+          <% else %>
+            <img src="<%= video['imgUrl'] %>" class="d-block w-100" height="600" alt="<%= video['title'] %>">
+            <div class="carousel-caption d-none d-md-block">
+              <h1><%= video['title'] %></h1>
+              <p><%= video['description'] %></p>
+              <a href="<%= video['url'] %>" class="btn btn-primary" target="_blank">Watch Video</a>
+            </div>
+          <% end %>
+
+        </div>
+      <% end %>
+    </div>
+    
+    <button class="carousel-control-prev" type="button" data-bs-target="#videoCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#videoCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+<% else %>
+  <p>No videos available.</p>
+<% end %>
+
+</br>
+
+<div class="container mt-4">
+  <div class="row">
+    <!-- Standings Column -->
+    <div class="col-md-8">
+
+      <div class="table-responsive">
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <a class="nav-item nav-link active" id="nav-western-tab" data-bs-toggle="tab" href="#nav-western" role="tab" aria-controls="nav-western" aria-selected="true">Western Conference</a>
+          <a class="nav-item nav-link" id="nav-eastern-tab" data-bs-toggle="tab" href="#nav-eastern" role="tab" aria-controls="nav-eastern" aria-selected="false">Eastern Conference</a>
+        </div>
+
+        <div class="tab-content" id="nav-tabContent">
+          <!-- Western Conference -->
+          <div class="tab-pane fade show active" id="nav-western" role="tabpanel" aria-labelledby="nav-western-tab">
+            <% @western_conference.each do |division, teams| %>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th><%= division %></th>
+                    <th>W</th>
+                    <th>L</th>
+                    <th>Pct</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% teams.each do |team| %>
+                    <tr>
+                      <td>
+                        <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %>" class="team-logo" style="width: 30px; height: 30px; object-fit: contain;" />
+                        <%= team['team']['name'] %>
+                      </td>
+                      <td><%= team['wins'] || 0 %></td>
+                      <td><%= team['loses'] || 0 %></td>
+                      <td><%= ((team['wins'] || 0).to_f / ((team['wins'] || 0) + (team['loses'] || 0))).round(3) %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% end %>
+          </div>
+
+          <!-- Eastern Conference -->
+          <div class="tab-pane fade" id="nav-eastern" role="tabpanel" aria-labelledby="nav-eastern-tab">
+            <% @eastern_conference.each do |division, teams| %>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th><%= division %></th>
+                    <th>W</th>
+                    <th>L</th>
+                    <th>Pct</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% teams.each do |team| %>
+                    <tr>
+                      <td>
+                        <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %>" class="team-logo" style="width: 30px; height: 30px; object-fit: contain;" />
+                        <%= team['team']['name'] %>
+                      </td>
+                      <td><%= team['wins'] || 0 %></td>
+                      <td><%= team['loses'] || 0 %></td>
+                      <td><%= ((team['wins'] || 0).to_f / ((team['wins'] || 0) + (team['loses'] || 0))).round(3) %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<!-- News Stories Column -->
+<div class="col-md-4">
+    <% @news['body'].first(8).each do |news_item| %>
+        <div class="card mb-3">
+          <div class="row no-gutters">
+              <div class="col-md-4 d-flex align-items-center justify-content-center">
+                  <% logo = @team_logos.find { |team, _logo| news_item['title'].downcase.include?(team) }&.last || 'espnLogo.svg' %>
+                  <%= image_tag(logo, class: 'card-img', alt: 'Team Logo', style: 'width: 64px; height: 64px; object-fit: contain;') %>
+              </div>
+              <div class="col-md-8">
+                  <div class="card-body">
+                      <h8 class="card-title"><%= news_item['title'] %></h8>
+                      <a href="<%= news_item['link'] %>" class="card-link">See more</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+    <% end %>
+</div>
+
