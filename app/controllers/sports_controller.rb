@@ -67,12 +67,10 @@ class SportsController < ApplicationController
 
   def get_mlb_standings(season)
     standings_data = fetch_mlb_standings(season)
-    puts "Current Year Standings Data: #{standings_data.inspect}"
 
     if standings_data[:team_logos].empty?
       previous_year = season - 1
       standings_data = fetch_mlb_standings(previous_year)
-      puts "Previous Year Standings Data: #{standings_data.inspect}"
     end
 
     standings_data
@@ -159,12 +157,10 @@ class SportsController < ApplicationController
 
   def get_mls_standings(season)
     standings_data = fetch_mls_standings(season)
-    puts "Current Year Standings Data: #{standings_data.inspect}"
 
     if standings_data[:eastern_conference].empty? && standings_data[:western_conference].empty?
       previous_year = season - 1
       standings_data = fetch_mls_standings(previous_year)
-      puts "Previous Year Standings Data: #{standings_data.inspect}"
     end
 
     standings_data
@@ -270,13 +266,11 @@ class SportsController < ApplicationController
 
   def get_nfl_standings(season)
     @standings_data = fetch_nfl_standings(season)
-    puts "Current Year Standings Data: #{@standings_data.inspect}"
 
     # If the response is empty or no data for the current year, try the previous year
     if @standings_data[:afc_teams].empty? && @standings_data[:nfc_teams].empty?
       previous_year = season - 1
       @standings_data = fetch_nfl_standings(previous_year)
-      puts "Previous Year Standings Data: #{@standings_data.inspect}"
     end
 
     @standings_data
@@ -373,12 +367,10 @@ class SportsController < ApplicationController
 
   def get_nba_standings(season)
     standings_data = fetch_nba_standings(season)
-    puts "Current Year Standings Data: #{standings_data.inspect}"
 
     if standings_data[:western_conference].empty? && standings_data[:eastern_conference].empty?
       previous_year = season - 1
       standings_data = fetch_nba_standings(previous_year)
-      puts "Previous Year Standings Data: #{standings_data.inspect}"
     end
 
     standings_data
@@ -486,12 +478,10 @@ class SportsController < ApplicationController
 
   def get_nhl_standings(season)
     standings_data = fetch_nhl_standings(season)
-    puts "Current Year Standings Data: #{standings_data.inspect}"
 
     if standings_data[:western_conference].empty? && standings_data[:eastern_conference].empty?
       previous_year = season - 1
       standings_data = fetch_nhl_standings(previous_year)
-      puts "Previous Year Standings Data: #{standings_data.inspect}"
     end
 
     standings_data

@@ -9,3 +9,5 @@ pin "bootstrap", to: "https://ga.jspm.io/npm:bootstrap@5.3.0/dist/js/bootstrap.e
 pin "popper.js", to: "https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"
 pin "bootstrap", to: "bootstrap.min.js", preload: true
 pin "@popperjs/core", to: "popper.js", preload: true
+
+
