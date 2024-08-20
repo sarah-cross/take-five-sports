@@ -21,4 +21,4 @@ production:
   host: <%= ENV['DATABASE_HOST'] %>
   port: 5432
   # Optional: You can use DATABASE_URL instead if you prefer Heroku's automatic setup
-  # url: <%= ENV['DATABASE_URL'] %>
+  url: <%= ENV['DATABASE_URL'] %>
