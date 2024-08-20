@@ -1,3 +1,6 @@
+require 'net/http'
+require 'json'
+
 class SportsController < ApplicationController
 
   def api_key
