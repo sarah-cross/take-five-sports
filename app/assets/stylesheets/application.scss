@@ -1,10 +1,22 @@
 @import "bootstrap";
 
-.carousel-caption {
-    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
-    padding: 10px;
-    border-radius: 5px;
+.video-container {
+  position: relative;
 }
+
+.carousel-caption {
+  position: absolute;
+  bottom: 20px; /* Position it near the bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+}
+
 
 .nav-link.active {
   text-decoration: underline;

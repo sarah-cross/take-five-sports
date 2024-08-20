@@ -13,7 +13,15 @@
       <% @highlight_videos.first(10).each_with_index do |video, index| %>
         <div class="carousel-item <%= 'active' if index == 0 %>">
           <% if video["embedUrl"].present? %>
-            <iframe src="<%= video['embedUrl'] %>" class="d-block w-100" height="500" frameborder="0" allowfullscreen></iframe>
+            <div class="video-container">
+              <iframe src="<%= video['embedUrl'] %>" class="d-block w-100" height="500" frameborder="0" allowfullscreen></iframe>
+              <% if video["source"] == "espn" %>
+                <div class="carousel-caption">
+                  <h3><%= video['title'] %></h3>
+                  <p><%= video['description'] %></p>
+                </div>
+              <% end %>
+            </div>
           <% else %>
             <img src="<%= video['imgUrl'] %>" class="d-block w-100" height="600" alt="<%= video['title'] %>">
             <div class="carousel-caption d-none d-md-block">
@@ -22,7 +30,6 @@
               <a href="<%= video['url'] %>" class="btn btn-primary" target="_blank">Watch Video</a>
             </div>
           <% end %>
-          
         </div>
       <% end %>
     </div>
