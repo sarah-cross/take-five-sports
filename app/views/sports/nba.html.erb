@@ -49,18 +49,21 @@
 
 </br>
 
-<div class="container mt-4">
+<div class="container">
   <div class="row">
     <!-- Standings Column -->
     <div class="col-md-8">
+      
+      <!-- Tabs should be outside the scrolling container -->
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-western-tab" data-bs-toggle="tab" href="#nav-western" role="tab" aria-controls="nav-western" aria-selected="true">Western Conference</a>
+        <a class="nav-item nav-link" id="nav-eastern-tab" data-bs-toggle="tab" href="#nav-eastern" role="tab" aria-controls="nav-eastern" aria-selected="false">Eastern Conference</a>
+      </div>
 
+      <!-- Scrolling container starts here -->
       <div class="table-responsive">
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-          <a class="nav-item nav-link active" id="nav-western-tab" data-bs-toggle="tab" href="#nav-western" role="tab" aria-controls="nav-western" aria-selected="true">Western Conference</a>
-          <a class="nav-item nav-link" id="nav-eastern-tab" data-bs-toggle="tab" href="#nav-eastern" role="tab" aria-controls="nav-eastern" aria-selected="false">Eastern Conference</a>
-        </div>
-
         <div class="tab-content" id="nav-tabContent">
+          
           <!-- Western Conference -->
           <div class="tab-pane fade show active" id="nav-western" role="tabpanel" aria-labelledby="nav-western-tab">
             <% @western_conference.each do |division, teams| %>
@@ -118,9 +121,13 @@
               </table>
             <% end %>
           </div>
-        </div>
-      </div>
-    </div>
+
+        </div> <!-- End of tab-content -->
+      </div> <!-- End of table-responsive -->
+
+    </div> <!-- End of col-md-8 -->
+
+
 
 
 <!-- News Stories Column -->
