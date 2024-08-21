@@ -61,93 +61,113 @@
         <div class="tab-content" id="nav-tabContent">
           <!-- Western Conference -->
           <div class="tab-pane fade show active" id="nav-western" role="tabpanel" aria-labelledby="nav-western-tab">
-            <% @western_conference.each do |division, teams| %>
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th><%= division %></th>
-                    <th>W</th>
-                    <th>L</th>
-                    <th>Pct</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% teams.sort_by { |team| -team['wins'] }.each do |team| %>
+            <% if @western_conference.present? %>
+              <% @western_conference.each do |division, teams| %>
+                <table class="table">
+                  <thead>
                     <tr>
-                      <td>
-                        <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %>" class="team-logo" style="width: 30px; height: 30px; object-fit: contain;" />
-                        <%= team['team']['name'] %>
-                      </td>
-                      <td><%= team['wins'] || 0 %></td>
-                      <td><%= team['loses'] || 0 %></td>
-                      <td><%= ((team['wins'] || 0).to_f / ((team['wins'] || 0) + (team['loses'] || 0))).round(3) %></td>
+                      <th><%= division %></th>
+                      <th>W</th>
+                      <th>L</th>
+                      <th>Pct</th>
                     </tr>
-                  <% end %>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    <% if teams.present? %>
+                      <% teams.sort_by { |team| -team['wins'] }.each do |team| %>
+                        <tr>
+                          <td>
+                            <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %>" class="team-logo" style="width: 30px; height: 30px; object-fit: contain;" />
+                            <%= team['team']['name'] %>
+                          </td>
+                          <td><%= team['wins'] || 0 %></td>
+                          <td><%= team['loses'] || 0 %></td>
+                          <td><%= ((team['wins'] || 0).to_f / ((team['wins'] || 0) + (team['loses'] || 0))).round(3) %></td>
+                        </tr>
+                      <% end %>
+                    <% else %>
+                      <tr>
+                        <td colspan="4">No teams available in this division</td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              <% end %>
+            <% else %>
+              <p>No data available for the Western Conference.</p>
             <% end %>
           </div>
 
           <!-- Eastern Conference -->
           <div class="tab-pane fade" id="nav-eastern" role="tabpanel" aria-labelledby="nav-eastern-tab">
-            <% @eastern_conference.each do |division, teams| %>
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th><%= division %></th>
-                    <th>W</th>
-                    <th>L</th>
-                    <th>Pct</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% teams.sort_by { |team| -team['wins'] }.each do |team| %>
+            <% if @eastern_conference.present? %>
+              <% @eastern_conference.each do |division, teams| %>
+                <table class="table">
+                  <thead>
                     <tr>
-                      <td>
-                        <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %>" class="team-logo" style="width: 30px; height: 30px; object-fit: contain;" />
-                        <%= team['team']['name'] %>
-                      </td>
-                      <td><%= team['wins'] || 0 %></td>
-                      <td><%= team['loses'] || 0 %></td>
-                      <td><%= ((team['wins'] || 0).to_f / ((team['wins'] || 0) + (team['loses'] || 0))).round(3) %></td>
+                      <th><%= division %></th>
+                      <th>W</th>
+                      <th>L</th>
+                      <th>Pct</th>
                     </tr>
-                  <% end %>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    <% if teams.present? %>
+                      <% teams.sort_by { |team| -team['wins'] }.each do |team| %>
+                        <tr>
+                          <td>
+                            <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %>" class="team-logo" style="width: 30px; height: 30px; object-fit: contain;" />
+                            <%= team['team']['name'] %>
+                          </td>
+                          <td><%= team['wins'] || 0 %></td>
+                          <td><%= team['loses'] || 0 %></td>
+                          <td><%= ((team['wins'] || 0).to_f / ((team['wins'] || 0) + (team['loses'] || 0))).round(3) %></td>
+                        </tr>
+                      <% end %>
+                    <% else %>
+                      <tr>
+                        <td colspan="4">No teams available in this division</td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              <% end %>
+            <% else %>
+              <p>No data available for the Eastern Conference.</p>
             <% end %>
           </div>
         </div>
       </div>
     </div>
 
-<!-- News Stories Column -->
-<div class="col-md-4">
-    <% @news['body'].first(8).each do |news_item| %>
-        <div class="card mb-3">
-          <div class="row no-gutters">
+    <!-- News Stories Column -->
+    <div class="col-md-4">
+      <% if @news.present? && @news['body'].present? %>
+        <% @news['body'].first(8).each do |news_item| %>
+          <div class="card mb-3">
+            <div class="row no-gutters">
               <div class="col-md-4 d-flex align-items-center justify-content-center">
-                  <% team_logo = 'espnLogo.svg' %> <!-- Default logo -->
-                  <% @team_logos.each do |team, logo| %>
-                    <% if news_item['title'].downcase.split.include?(team) %>
-                      <% team_logo = logo %>
-                      <% break %> <!-- Exit loop early if a match is found -->
-                    <% end %>
+                <% team_logo = 'espnLogo.svg' %> <!-- Default logo -->
+                <% @team_logos.each do |team, logo| %>
+                  <% if news_item['title'].downcase.split.include?(team) %>
+                    <% team_logo = logo %>
+                    <% break %> <!-- Exit loop early if a match is found -->
                   <% end %>
-                  <%= image_tag(team_logo, class: 'card-img', alt: 'Team Logo', style: 'width: 64px; height: 64px; object-fit: contain;') %>
+                <% end %>
+                <%= image_tag(team_logo, class: 'card-img', alt: 'Team Logo', style: 'width: 64px; height: 64px; object-fit: contain;') %>
               </div>
               <div class="col-md-8">
-                  <div class="card-body">
-                      <h8 class="card-title"><%= news_item['title'] %></h8>
-                      <a href="<%= news_item['link'] %>" class="card-link">See more</a>
-                  </div>
+                <div class="card-body">
+                  <h8 class="card-title"><%= news_item['title'] %></h8>
+                  <a href="<%= news_item['link'] %>" class="card-link">See more</a>
+                </div>
               </div>
+            </div>
           </div>
-      </div>
-    <% end %>
+        <% end %>
+      <% else %>
+        <p>No news stories available at this time.</p>
+      <% end %>
+    </div>
+  </div>
 </div>
-
-
-
-
-
-

@@ -15,6 +15,9 @@ class SportsController < ApplicationController
     request = Net::HTTP::Get.new(uri)
     headers.each { |key, value| request[key] = value }
 
+    # Log the API call details
+    Rails.logger.info "API call made to #{uri} with headers: #{headers}"
+
     response = http.request(request)
     JSON.parse(response.body)
   end
@@ -156,15 +159,28 @@ class SportsController < ApplicationController
 
 
   def get_mls_standings(season)
-    standings_data = fetch_mls_standings(season)
+    Rails.logger.info "Fetching MLS standings for season: #{season}"
 
-    if standings_data[:eastern_conference].empty? && standings_data[:western_conference].empty?
+    # Fetch the current season's standings data
+    raw_standings_data = fetch_mls_standings(season)
+    standings_data = organize_mls_standings(raw_standings_data)
+
+
+    # Check if the standings data is missing or invalid, and try the previous season
+    if raw_standings_data['response'].nil? || raw_standings_data['response'].empty? ||
+       (standings_data[:western_conference].empty? && standings_data[:eastern_conference].empty?)
+
       previous_year = season - 1
-      standings_data = fetch_mls_standings(previous_year)
+      Rails.logger.warn "Current season data empty or invalid, fetching for previous year: #{previous_year}"
+
+      raw_standings_data = fetch_mls_standings(previous_year)
+      standings_data = organize_mls_standings(raw_standings_data)
     end
 
     standings_data
   end
+
+
 
   def fetch_mls_standings(season)
     standings_url = "https://api-football-v1.p.rapidapi.com/v3/standings?league=253&season=#{season}"
@@ -175,12 +191,16 @@ class SportsController < ApplicationController
     }
 
     standings_data = fetch_api_data(standings_uri, headers)
-    organize_mls_standings(standings_data)
+    
+    standings_data # Return the raw data; organizing happens separately
   end
+
 
   def organize_mls_standings(standings_data)
     eastern_conference = []
     western_conference = []
+
+    return { eastern_conference: [], western_conference: [] } if standings_data['response'].nil?
 
     standings_data['response'].each do |league|
       league['league']['standings'].each do |teams|
@@ -198,6 +218,7 @@ class SportsController < ApplicationController
   end
 
 
+
   def fetch_mls_news
     news_url = "https://espn13.p.rapidapi.com/v1/soccer/league/news?league=usa.1"
     news_uri = URI.parse(news_url)
@@ -206,7 +227,8 @@ class SportsController < ApplicationController
       "x-rapidapi-host" => 'espn13.p.rapidapi.com'
     }
 
-    fetch_api_data(news_uri, headers)
+    news_data = fetch_api_data(news_uri, headers)
+    news_data
   end
 
 
@@ -477,15 +499,28 @@ class SportsController < ApplicationController
 
 
   def get_nhl_standings(season)
-    standings_data = fetch_nhl_standings(season)
+    Rails.logger.info "Fetching NHL standings for season: #{season}"
 
-    if standings_data[:western_conference].empty? && standings_data[:eastern_conference].empty?
+    # Fetch the current season's standings data
+    raw_standings_data = fetch_nhl_standings(season)
+    standings_data = group_nhl_standings(raw_standings_data)
+
+    # Check if the standings data is missing or invalid, and try the previous season
+    if raw_standings_data['groups'].nil? || raw_standings_data['groups'].empty? ||
+       (standings_data[:western_conference].all? { |_, teams| teams.nil? } && standings_data[:eastern_conference].all? { |_, teams| teams.nil? })
+      
       previous_year = season - 1
-      standings_data = fetch_nhl_standings(previous_year)
+      Rails.logger.warn "Current season data empty or invalid, fetching for previous year: #{previous_year}"
+      
+      raw_standings_data = fetch_nhl_standings(previous_year)
+      standings_data = group_nhl_standings(raw_standings_data)
     end
 
     standings_data
   end
+
+
+
 
   def fetch_nhl_standings(season)
     standings_url = "https://sport-highlights-api.p.rapidapi.com/hockey/standings?season=#{season}&leagueId=49291"
@@ -496,11 +531,12 @@ class SportsController < ApplicationController
     }
 
     standings_data = fetch_api_data(standings_uri, headers)
-    group_nhl_standings(standings_data)
+    
   end
 
   def group_nhl_standings(standings_data)
     return { western_conference: {}, eastern_conference: {}, team_logos: {} } unless standings_data['groups']
+
 
     western_conference = {
       'Central' => standings_data['groups'].find { |group| group['name'] == 'Central' }&.fetch('standings', []),
@@ -512,9 +548,16 @@ class SportsController < ApplicationController
       'Metropolitan' => standings_data['groups'].find { |group| group['name'] == 'Metropolitan' }&.fetch('standings', [])
     }
 
+    Rails.logger.info "Western Conference: #{western_conference.inspect}"
+    Rails.logger.info "Eastern Conference: #{eastern_conference.inspect}"
+
     team_logos = {}
     [western_conference, eastern_conference].each do |conference|
+      next if conference.nil?
+
       conference.each_value do |division|
+        next if division.nil? # Add this line to prevent errors if division is nil
+
         division.each do |team|
           team_name = team['team']['name'].downcase
           team_logos[team_name.split.last] = team['team']['logo']

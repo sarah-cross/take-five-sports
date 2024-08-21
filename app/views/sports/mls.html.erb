@@ -145,25 +145,28 @@
     </div>
 
 
-
-    <!-- News Stories Column -->
-    <div class="col-md-4">
-        <% @news['articles'].first(8).each do |news_item| %>
-            <div class="card mb-3">
-              <div class="row no-gutters">
-                  <div class="col-md-4 d-flex align-items-center justify-content-center">
-                      <img src="<%= news_item['images'].first['url'] %>" alt="<%= news_item['images'].first['alt'] %>" class="img-fluid" width="100%" height="auto">
-                  </div>
-                  <div class="col-md-8">
-                      <div class="card-body">
-                          <h8 class="card-title"><%= news_item['headline'] %></h8>
-                          <a href="<%= news_item['links']['web']['href'] %>" class="card-link">See more</a>
-                      </div>
-                  </div>
-              </div>
+<!-- News Stories Column -->
+<div class="col-md-4">
+  <% if @news.present? && @news['articles'].present? %>
+    <% @news['articles'].first(8).each do |news_item| %>
+      <div class="card mb-3">
+        <div class="row no-gutters">
+          <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <img src="<%= news_item['images'].first['url'] %>" alt="<%= news_item['images'].first['alt'] %>" class="img-fluid" width="100%" height="auto">
           </div>
-        <% end %>
-    </div>
-  </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h8 class="card-title"><%= news_item['headline'] %></h8>
+              <a href="<%= news_item['links']['web']['href'] %>" class="card-link">See more</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <!-- Fallback content if no news is available -->
+    <p>No news stories available at this time. Please check back later.</p>
+  <% end %>
 </div>
+
 
