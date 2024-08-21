@@ -38,6 +38,7 @@ class SportsController < ApplicationController
   end
 
 
+
   def get_mlb_highlights(season)
     highlights = fetch_mlb_highlights(season)
     
@@ -90,21 +91,22 @@ class SportsController < ApplicationController
     team_logos = {}
     standings = { al: {}, nl: {} }
 
-    [{ league: :al, data: @al_standings_data }, { league: :nl, data: @nl_standings_data }].each do |league_data|
-      if league_data[:data].present? && league_data[:data]['data'].present?
-        league_data[:data]['data'].each do |division|
-          division_name = division['divisionName'] || "Unknown Division"
-          standings[league_data[:league]][division_name] = division['data']
+    [{ league: :al, data: al_standings_data }, { league: :nl, data: nl_standings_data }].each do |league_data|
+      next unless league_data[:data].present? && league_data[:data]['data'].present? # Check if data is present
 
-          division['data'].each do |team|
-            team_logos[team['name'].downcase] = team['logo']
-          end
+      league_data[:data]['data'].each do |division|
+        division_name = division['divisionName'] || "Unknown Division"
+        standings[league_data[:league]][division_name] = division['data'] || [] # Ensure there's a fallback if 'data' is nil
+
+        division['data']&.each do |team| # Use safe navigation operator to prevent errors if 'data' is nil
+          team_logos[team['name'].downcase] = team['logo'] if team['name'].present? && team['logo'].present?
         end
       end
     end
 
     { standings: standings, team_logos: team_logos }
   end
+
 
 
   def fetch_standings_for_league(league, season)
@@ -131,7 +133,7 @@ class SportsController < ApplicationController
 
 
   ###################################################
-  ################ MLB METHODS ######################
+  ################ MLS METHODS ######################
   ###################################################
   
   def mls
@@ -143,6 +145,7 @@ class SportsController < ApplicationController
     @western_conference_standings = @standings_data[:western_conference]
     @news = fetch_mls_news
   end
+
 
   def fetch_mls_highlights
     highlights_url = "https://sport-highlights-api.p.rapidapi.com/football/highlights?leagueName=Major%20League%20Soccer"
@@ -547,9 +550,6 @@ class SportsController < ApplicationController
       'Atlantic' => standings_data['groups'].find { |group| group['name'] == 'Atlantic' }&.fetch('standings', []),
       'Metropolitan' => standings_data['groups'].find { |group| group['name'] == 'Metropolitan' }&.fetch('standings', [])
     }
-
-    Rails.logger.info "Western Conference: #{western_conference.inspect}"
-    Rails.logger.info "Eastern Conference: #{eastern_conference.inspect}"
 
     team_logos = {}
     [western_conference, eastern_conference].each do |conference|
