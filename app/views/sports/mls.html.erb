@@ -53,7 +53,7 @@
   <div class="row">
     <!-- Standings Table Column -->
     <div class="col-md-8">
- 
+
       <ul class="nav nav-tabs" id="standingsTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button class="nav-link active" id="eastern-tab" data-bs-toggle="tab" data-bs-target="#eastern" type="button" role="tab" aria-controls="eastern" aria-selected="true">Eastern Conference</button>
@@ -82,7 +82,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% @eastern_conference_standings.each do |team| %>
+                <% @eastern_conference_standings.sort_by { |team| -team['all']['win'] }.each do |team| %>
                   <tr>
                     <td>
                       <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %> logo" width="30" height="30">
@@ -121,7 +121,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% @western_conference_standings.each do |team| %>
+                <% @western_conference_standings.sort_by { |team| -team['all']['win'] }.each do |team| %>
                   <tr>
                     <td>
                       <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %> logo" width="30" height="30">
@@ -143,6 +143,9 @@
         </div>
       </div>
     </div>
+
+
+
     <!-- News Stories Column -->
     <div class="col-md-4">
         <% @news['articles'].first(8).each do |news_item| %>

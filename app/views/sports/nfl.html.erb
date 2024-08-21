@@ -76,7 +76,7 @@
               </tr>
             </thead>
             <tbody>
-              <% teams.each do |team| %>
+              <% teams.sort_by { |team| -team['won'] }.each do |team| %>
                 <tr>
                   <td>
                     <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %>" class="team-logo" width="30" height="30" />
@@ -104,7 +104,7 @@
               </tr>
             </thead>
             <tbody>
-              <% teams.each do |team| %>
+              <% teams.sort_by { |team| -team['won'] }.each do |team| %>
                 <tr>
                   <td>
                     <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %>" class="team-logo" width="30" height="30" />

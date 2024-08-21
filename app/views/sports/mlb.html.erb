@@ -49,8 +49,6 @@
 
 </br>
 
-
-
 <div class="container">
   <div class="row">
     <!-- Standings Table Column -->
@@ -83,22 +81,23 @@
                 </tr>
               </thead>
               <tbody>
-                <% @al_standings_data['data'].first['data'].each do |team| %>
-                  <% if ['Yankees', 'Red Sox', 'Blue Jays', 'Rays', 'Orioles'].include?(team['name']) %>
-                    <tr>
-                      <td>
-                        <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
-                        <%= team['name'] %>
-                      </td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
-                    </tr>
-                  <% end %>
+                <% @al_standings_data['data'].first['data']
+                      .select { |team| ['Yankees', 'Red Sox', 'Blue Jays', 'Rays', 'Orioles'].include?(team['name']) }
+                      .sort_by { |team| -team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue').to_i }
+                      .each do |team| %>
+                  <tr>
+                    <td>
+                      <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
+                      <%= team['name'] %>
+                    </td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
+                  </tr>
                 <% end %>
               </tbody>
             </table>
@@ -118,22 +117,23 @@
                 </tr>
               </thead>
               <tbody>
-                <% @al_standings_data['data'].first['data'].each do |team| %>
-                  <% if ['White Sox', 'Guardians', 'Tigers', 'Royals', 'Twins'].include?(team['name']) %>
-                    <tr>
-                      <td>
-                        <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
-                        <%= team['name'] %>
-                      </td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
-                    </tr>
-                  <% end %>
+                <% @al_standings_data['data'].first['data']
+                      .select { |team| ['White Sox', 'Guardians', 'Twins', 'Royals', 'Tigers'].include?(team['name']) }
+                      .sort_by { |team| -team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue').to_i }
+                      .each do |team| %>
+                  <tr>
+                    <td>
+                      <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
+                      <%= team['name'] %>
+                    </td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
+                  </tr>
                 <% end %>
               </tbody>
             </table>
@@ -153,27 +153,26 @@
                 </tr>
               </thead>
               <tbody>
-                <% @al_standings_data['data'].first['data'].each do |team| %>
-                  <% if ['Astros', 'Angels', 'Athletics', 'Mariners', 'Rangers'].include?(team['name']) %>
-                    <tr>
-                      <td>
-                        <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
-                        <%= team['name'] %>
-                      </td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
-                    </tr>
-                  <% end %>
+                <% @al_standings_data['data'].first['data']
+                      .select { |team| ['Astros', 'Mariners', 'Rangers', 'Athletics', 'Angels'].include?(team['name']) }
+                      .sort_by { |team| -team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue').to_i }
+                      .each do |team| %>
+                  <tr>
+                    <td>
+                      <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
+                      <%= team['name'] %>
+                    </td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
+                  </tr>
                 <% end %>
               </tbody>
             </table>
-
-
           </div>
         </div>
         <!-- National League Tab -->
@@ -195,22 +194,23 @@
                 </tr>
               </thead>
               <tbody>
-                <% @nl_standings_data['data'].first['data'].each do |team| %>
-                  <% if ['Braves', 'Marlins', 'Mets', 'Phillies', 'Nationals'].include?(team['name']) %>
-                    <tr>
-                      <td>
-                        <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
-                        <%= team['name'] %>
-                      </td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
-                    </tr>
-                  <% end %>
+                <% @nl_standings_data['data'].first['data']
+                      .select { |team| ['Phillies', 'Braves', 'Mets', 'Nationals', 'Marlins'].include?(team['name']) }
+                      .sort_by { |team| -team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue').to_i }
+                      .each do |team| %>
+                  <tr>
+                    <td>
+                      <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
+                      <%= team['name'] %>
+                    </td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
+                  </tr>
                 <% end %>
               </tbody>
             </table>
@@ -230,22 +230,23 @@
                 </tr>
               </thead>
               <tbody>
-                <% @nl_standings_data['data'].first['data'].each do |team| %>
-                  <% if ['Cubs', 'Reds', 'Brewers', 'Pirates', 'Cardinals'].include?(team['name']) %>
-                    <tr>
-                      <td>
-                        <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
-                        <%= team['name'] %>
-                      </td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
-                    </tr>
-                  <% end %>
+                <% @nl_standings_data['data'].first['data']
+                      .select { |team| ['Brewers', 'Cubs', 'Cardinals', 'Reds', 'Pirates'].include?(team['name']) }
+                      .sort_by { |team| -team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue').to_i }
+                      .each do |team| %>
+                  <tr>
+                    <td>
+                      <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
+                      <%= team['name'] %>
+                    </td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
+                  </tr>
                 <% end %>
               </tbody>
             </table>
@@ -265,30 +266,33 @@
                 </tr>
               </thead>
               <tbody>
-                <% @nl_standings_data['data'].first['data'].each do |team| %>
-                  <% if ['Diamondbacks', 'Rockies', 'Dodgers', 'Padres', 'Giants'].include?(team['name']) %>
-                    <tr>
-                      <td>
-                        <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
-                        <%= team['name'] %>
-                      </td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
-                      <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
-                    </tr>
-                  <% end %>
+                <% @nl_standings_data['data'].first['data']
+                      .select { |team| ['Dodgers', 'Padres', 'Diamondbacks', 'Giants', 'Rockies'].include?(team['name']) }
+                      .sort_by { |team| -team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue').to_i }
+                      .each do |team| %>
+                  <tr>
+                    <td>
+                      <img src="<%= team['logo'] %>" alt="<%= team['name'] %> logo" width="30" height="30">
+                      <%= team['name'] %>
+                    </td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Wins' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Winning Percentage' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Games Back' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Home Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Home Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Away Wins' }&.[]('displayValue') || 'N/A' %>-<%= team['stats'].find { |stat| stat['description'] == 'Away Losses' }&.[]('displayValue') || 'N/A' %></td>
+                    <td><%= team['stats'].find { |stat| stat['description'] == 'Record last 10 games' }&.[]('displayValue') || 'N/A' %></td>
+                  </tr>
                 <% end %>
               </tbody>
             </table>
-
           </div>
         </div>
       </div>
     </div>
+
+
+
     <!-- News Stories Column -->
     <div class="col-md-4">
         <% @news['body'].first(8).each do |news_item| %>

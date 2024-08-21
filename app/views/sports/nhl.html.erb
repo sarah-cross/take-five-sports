@@ -72,7 +72,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% teams.each do |team| %>
+                  <% teams.sort_by { |team| -team['wins'] }.each do |team| %>
                     <tr>
                       <td>
                         <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %>" class="team-logo" style="width: 30px; height: 30px; object-fit: contain;" />
@@ -101,7 +101,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% teams.each do |team| %>
+                  <% teams.sort_by { |team| -team['wins'] }.each do |team| %>
                     <tr>
                       <td>
                         <img src="<%= team['team']['logo'] %>" alt="<%= team['team']['name'] %>" class="team-logo" style="width: 30px; height: 30px; object-fit: contain;" />
