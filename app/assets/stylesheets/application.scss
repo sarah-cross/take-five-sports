@@ -27,11 +27,47 @@
 }
 
 
+/* Increase the size of the previous and next buttons */
 .carousel-control-prev,
 .carousel-control-next {
+  width: 60px; 
+  height: 60px; 
   z-index: 2; /* Ensure buttons are on top of carousel content */
-  width: 5%; /* Make them easy to click/tap */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust to center */
 }
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 40px; /* Increase the icon size */
+  height: 40px; /* Increase the icon size */
+  background-size: 100%, 100%; /* Ensure the icons fit the container */
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  background-color: rgba(0, 0, 0, 0.7); /* Darker on hover */
+}
+
+
+/* Make buttons larger on mobile */
+@media (max-width: 767px) {
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 80px; /* Increase width for mobile */
+    height: 80px; /* Increase height for mobile */
+  }
+
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    width: 50px; /* Increase icon size for mobile */
+    height: 50px; /* Increase icon size for mobile */
+  }
+}
+
+
+
+
 
 /* Default styles for the nav tabs */
 .nav-tabs {
