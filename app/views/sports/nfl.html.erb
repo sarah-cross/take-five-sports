@@ -1,6 +1,6 @@
 
 <% if @highlight_videos.any? %>
-  <div id="videoCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div id="videoCarousel" class="carousel slide" data-bs-ride="false">
     
     <!-- Indicators -->
     <div class="carousel-indicators">
@@ -54,10 +54,11 @@
   <!-- Standings Column -->
   <div class="col-md-8">
      <div class="table-responsive">
-      <div class="nav nav-tabs" id="standingsTab" role="tablist">
-        <a class="nav-item nav-link active" id="afc-tab" data-bs-toggle="tab" href="#afc" role="tab" aria-controls="afc" aria-selected="true">American Football Conference</a>
-        <a class="nav-item nav-link" id="nfc-tab" data-bs-toggle="tab" href="#nfc" role="tab" aria-controls="nfc" aria-selected="false">National Football Conference</a>
-      </div>
+
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <a class="nav-item nav-link active" id="afc-tab" data-bs-toggle="tab" href="#afc" role="tab" aria-controls="afc" aria-selected="true">American Football Conference</a>
+          <a class="nav-item nav-link" id="nfc-tab" data-bs-toggle="tab" href="#nfc" role="tab" aria-controls="nfc" aria-selected="false">National Football Conference</a>
+        </div>
     </div>
 
     

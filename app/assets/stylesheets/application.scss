@@ -4,46 +4,70 @@
   position: relative;
 }
 
+/* Default styles for all screens */
 .carousel-caption {
   position: absolute;
-  bottom: 20px; /* Position it near the bottom */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
+  bottom: 20px;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
-  padding: 10px;
-  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
   color: white;
 }
 
+/* Adjust for smaller screens (mobile) */
+@media (max-width: 767px) {
+  .carousel-caption p {
+    display: none; /* Hide the description */
+  }
+   .carousel-caption {
+    bottom: 30px;
+    top: auto;
+    transform: none;
+    padding: 5px; /* Optional: Adjust padding for mobile */
+  }
+}
 
 
+.carousel-control-prev,
+.carousel-control-next {
+  z-index: 2; /* Ensure buttons are on top of carousel content */
+  width: 5%; /* Make them easy to click/tap */
+}
 
-
-.news-cards {
+/* Default styles for the nav tabs */
+.nav-tabs {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-wrap: nowrap; /* Prevent the tabs from wrapping */
 }
 
-.news-card img {
-  max-width: 100%; /* Ensures the logo scales appropriately */
+.nav-item {
+  flex: 1; /* Ensure each tab takes up equal space */
+  text-align: center; /* Center the text within each tab */
 }
 
-.news-card .card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+
+
+
+/* Ensure the table container is scrollable horizontally */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
-.news-card .card-title {
-  font-size: 1rem;
-  margin-bottom: 10px;
+/* Make the first column sticky */
+.table th:first-child,
+.table td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: #fff; /* Match the table's background color */
+  z-index: 2; /* Ensure it stays on top of other columns */
+  box-shadow: 1px 0 0 #ccc; /* Optional: Add a slight shadow to differentiate */
 }
 
-.news-card .btn {
-  margin-top: auto; /* Pushes the button to the bottom */
+/* Ensure no wrapping in table cells */
+.table th,
+.table td {
+  white-space: nowrap; /* Prevent text from wrapping */
 }
+
 
 
