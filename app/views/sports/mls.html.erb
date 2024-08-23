@@ -152,7 +152,11 @@
       <div class="card mb-3">
         <div class="row no-gutters">
           <div class="col-md-4 d-flex align-items-center justify-content-center">
-            <img src="<%= news_item['images'].first['url'] %>" alt="<%= news_item['images'].first['alt'] %>" class="img-fluid" width="100%" height="auto">
+            <% if news_item['images'].present? && news_item['images'].first.present? %>
+              <img src="<%= news_item['images'].first['url'] %>" alt="<%= news_item['images'].first['alt'] %>" class="img-fluid" width="100%" height="auto">
+            <% else %>
+              <img src="/assets/espnLogo.svg" alt="ESPN Logo" class="img-fluid" width="100%" height="auto">
+            <% end %>
           </div>
           <div class="col-md-8">
             <div class="card-body">
