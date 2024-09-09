@@ -208,6 +208,7 @@ class SportsController < ApplicationController
     standings_data['response'].each do |league|
       league['league']['standings'].each do |teams|
         teams.each do |team|
+          # Ensure that 'group' is correctly specified
           if team['group'] == "Eastern Conference"
             eastern_conference << team
           elsif team['group'] == "Western Conference"
@@ -219,6 +220,7 @@ class SportsController < ApplicationController
 
     { eastern_conference: eastern_conference, western_conference: western_conference }
   end
+
 
 
 
