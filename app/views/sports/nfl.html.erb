@@ -84,7 +84,12 @@
                   </td>
                   <td><%= team['won'] || 0 %></td>
                   <td><%= team['lost'] || 0 %></td>
-                  <td><%= ((team['won'] || 0).to_f / ((team['won'] || 0) + (team['lost'] || 0))).round(3) %></td>
+                  <td><%= if (team['won'] || 0) + (team['lost'] || 0) == 0
+                        0.0
+                      else
+                        ((team['won'] || 0).to_f / ((team['won'] || 0) + (team['lost'] || 0))).round(3)
+                      end%>
+                  </td>
                 </tr>
               <% end %>
             </tbody>
